@@ -1,0 +1,16 @@
+[
+{
+  "modid": "onim.en.tldev",
+  "name": "Dungeon Dev",
+  "description": "This mod is for TheLow Developers",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["Onimen"],
+  "credits": "The Forge and FML guys, for making this example",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
