@@ -10,7 +10,6 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import onim.en.tldev.module.DungeonDevModule;
 import onim.en.tldev.module.Module;
 import onim.en.tldev.util.SystemUtil;
-import onim.en.tldev.util.Vit;
 
 @DungeonDevModule(id = "view-info-button", name = "ViewInfoを実行するボタン")
 public class ViewInfoButton extends Module {
@@ -19,11 +18,10 @@ public class ViewInfoButton extends Module {
 
   @SubscribeEvent
   public void onInitGui(InitGuiEvent.Post event) {
-    Vit vit = Vit.create();
-    vit.isTrue(event.gui instanceof GuiInventory);
-    vit.or(event.gui instanceof GuiContainerCreative);
+    boolean isSurvivalInventory = event.gui instanceof GuiInventory;
+    boolean isCreativeInventory = event.gui instanceof GuiContainerCreative;
 
-    if (vit.get()) {
+    if (isSurvivalInventory || isCreativeInventory) {
       GuiButton button = new GuiButton(buttonId, 8, 8, 100, 20, "Viewinfo");
       event.buttonList.add(button);
     }
