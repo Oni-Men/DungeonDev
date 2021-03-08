@@ -60,6 +60,9 @@ public class DungeonDev {
   @EventHandler
   public void preInit(FMLPreInitializationEvent event) {
     // Load and set the mod info
+    Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+      UpdateTool.update();
+    }));
   }
 
   @SideOnly(Side.CLIENT)
