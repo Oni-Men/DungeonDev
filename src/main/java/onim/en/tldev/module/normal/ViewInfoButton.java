@@ -11,7 +11,7 @@ import onim.en.tldev.module.DungeonDevModule;
 import onim.en.tldev.module.Module;
 import onim.en.tldev.util.SystemUtil;
 
-@DungeonDevModule(id = "view-info-button", name = "ViewInfoを実行するボタン")
+@DungeonDevModule(id = "view-info-button", name = "ViewInfoボタン")
 public class ViewInfoButton extends Module {
 
   private final int buttonId = SystemUtil.uniqueButtonId();

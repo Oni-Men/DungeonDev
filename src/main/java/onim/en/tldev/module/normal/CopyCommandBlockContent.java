@@ -15,7 +15,7 @@ import onim.en.tldev.module.DungeonDevModule;
 import onim.en.tldev.module.Module;
 import onim.en.tldev.util.SystemUtil;
 
-@DungeonDevModule(id = "copy-command-block-content", name = "コマブロの内容をコピーするボタン")
+@DungeonDevModule(id = "copy-command-block-content", name = "コマブロの内容コピー")
 public class CopyCommandBlockContent extends Module {
 
   private final int buttonId;

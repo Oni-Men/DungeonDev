@@ -2,22 +2,26 @@ package onim.en.tldev;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.lwjgl.input.Keyboard;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiIngame;
+import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IChatComponent;
 import net.minecraftforge.client.ClientCommandHandler;
-import net.minecraftforge.client.event.EntityViewRenderEvent;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.InputEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import onim.en.tldev.command.DungeonDevCommand;
-import onim.en.tldev.gui.GuiManager;
+import onim.en.tldev.gui.ModuleSettingGUI;
 import onim.en.tldev.module.ModuleManager;
 import onim.en.tldev.util.TheLowUtil;
 
@@ -27,9 +31,11 @@ public class DungeonDev {
 
   public static final String MODID = "onim.en.tldev";
   public static final String NAME = "Dungeon Dev";
-  public static final String VERSION = "1.0.0";
+  public static final String VERSION = "0.0.1";
 
   public static final Logger logger = LogManager.getLogger(NAME);
+  public static final KeyBinding keyBindDevSettings =
+      new KeyBinding(MODID + ".settings", Keyboard.KEY_P, MODID);
 
   private static DungeonDev instance = null;
   
@@ -60,9 +66,7 @@ public class DungeonDev {
   @EventHandler
   public void preInit(FMLPreInitializationEvent event) {
     // Load and set the mod info
-    Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-      UpdateTool.update();
-    }));
+    // UpdateTool.update();
   }
 
   @SideOnly(Side.CLIENT)
@@ -70,14 +74,18 @@ public class DungeonDev {
   public void init(FMLInitializationEvent event) {
     ClientCommandHandler.instance.registerCommand(new DungeonDevCommand());
 
+    ClientRegistry.registerKeyBinding(keyBindDevSettings);
+
     ModuleManager.registerAll();
     ModuleManager.enableAll();
+
+    MinecraftForge.EVENT_BUS.register(this);
   }
 
   @SubscribeEvent
-  public void onEntityViewRender(EntityViewRenderEvent event) {
-    float partialTick = (float) event.renderPartialTicks;
-    GuiManager.renderRegisteredHUD(partialTick);
+  public void onKeyInput(InputEvent.KeyInputEvent event) {
+    if (keyBindDevSettings.isPressed()) {
+      Minecraft.getMinecraft().displayGuiScreen(new ModuleSettingGUI());
+    }
   }
-
 }

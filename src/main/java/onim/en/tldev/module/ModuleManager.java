@@ -4,9 +4,11 @@ import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Set;
 
 import org.apache.commons.lang3.Validate;
 
+import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Maps;
 import com.google.common.reflect.ClassPath;
 
@@ -20,7 +22,7 @@ public class ModuleManager {
 
   private static HashMap<String, Module> idToModule = Maps.newHashMap();
   private static HashMap<String, Module> nameToModule = Maps.newHashMap();
-  private static HashMap<String, Module> modulesByCategory = Maps.newHashMap();
+  private static HashMultimap<String, Module> modulesByCategory = HashMultimap.create();
 
   public static void registerAll() {
     try {
@@ -83,6 +85,14 @@ public class ModuleManager {
 
   public static Collection<Module> getModules() {
     return idToModule.values();
+  }
+
+  public static Set<String> getCategories() {
+    return modulesByCategory.keySet();
+  }
+
+  public static Set<Module> getCategoryModules(String category) {
+    return modulesByCategory.get(category);
   }
 
   public static void enableModule(Module module) {
