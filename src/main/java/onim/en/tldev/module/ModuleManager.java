@@ -20,6 +20,7 @@ public class ModuleManager {
 
   private static HashMap<String, Module> idToModule = Maps.newHashMap();
   private static HashMap<String, Module> nameToModule = Maps.newHashMap();
+  private static HashMap<String, Module> modulesByCategory = Maps.newHashMap();
 
   public static void registerAll() {
     try {
@@ -71,6 +72,7 @@ public class ModuleManager {
 
     idToModule.put(annotation.id(), module);
     nameToModule.put(annotation.name(), module);
+    modulesByCategory.put(annotation.category(), module);
 
     DungeonDev.logger.info("Module Registered: " + module.getName());
   }
