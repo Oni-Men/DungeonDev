@@ -28,7 +28,7 @@ plugins {
     id "net.minecraftforge.gradle.forge" version "2.0.2"
 }
 */
-version = "1.0"
+version = "0.0.1"
 group= "onim.en.tldev" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "DungeonDev"
 
@@ -66,7 +66,7 @@ dependencies {
     // for more info...
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
-
+    
 }
 
 processResources
