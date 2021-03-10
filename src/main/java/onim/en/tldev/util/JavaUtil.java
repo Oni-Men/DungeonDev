@@ -61,4 +61,62 @@ public class JavaUtil {
       return null;
     }
   }
+
+  public static Field getDeclaredFieldResursion(Class<?> target, String fieldName) {
+    while (target != null) {
+      try {
+        return target.getDeclaredField(fieldName);
+      } catch (NoSuchFieldException e) {
+        target = target.getSuperclass();
+      }
+    }
+    return null;
+  }
+
+  public static Set<Field> getDeclaredFieldsResursion(Class<?> target) {
+    HashSet<Field> result = new HashSet<>();
+    do {
+      for (Field field : target.getDeclaredFields()) {
+        result.add(field);
+      }
+    } while ((target = target.getSuperclass()) != null);
+    return result;
+  }
+
+  /**
+   * AのフィールドをBのフィールドで上書きする
+   * 
+   * @param a
+   * @param b
+   */
+  public static void merge(Object a, Object b) {
+    Class<? extends Object> classA = a.getClass();
+    Class<? extends Object> classB = b.getClass();
+
+    if (!classA.equals(classB)) {
+      return;
+    }
+
+    for (Field fieldA : getDeclaredFieldsResursion(classA)) {
+      try {
+        Field fieldB = getDeclaredFieldResursion(classB, fieldA.getName());
+
+        if (fieldB == null) {
+          continue;
+        }
+
+        fieldB.setAccessible(true);
+        Object value = fieldB.get(b);
+
+        if (value == null) {
+          continue;
+        }
+
+        setFieldValueRecursion(a, fieldA.getName(), value);
+      } catch (Exception e) {
+        continue;
+      }
+    }
+
+  }
 }

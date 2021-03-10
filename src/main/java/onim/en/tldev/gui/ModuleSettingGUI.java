@@ -44,6 +44,13 @@ public class ModuleSettingGUI extends GuiScreen {
   }
 
   @Override
+  public void onGuiClosed() {
+    super.onGuiClosed();
+
+    ModuleManager.saveModuleSettings();
+  }
+
+  @Override
   public void drawScreen(int mouseX, int mouseY, float partialTicks) {
     super.drawScreen(mouseX, mouseY, partialTicks);
 

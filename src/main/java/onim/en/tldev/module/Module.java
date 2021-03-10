@@ -2,6 +2,8 @@ package onim.en.tldev.module;
 
 import com.google.common.base.Strings;
 
+import onim.en.tldev.annotation.Save;
+
 public abstract class Module {
 
   public enum State {
@@ -35,6 +37,8 @@ public abstract class Module {
   private String id;
   private String name;
   private String category;
+
+  @Save
   private boolean enabled = false;
 
   public final String getName() {

@@ -3,12 +3,10 @@ package onim.en.tldev.command;
 import java.util.Arrays;
 import java.util.List;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.ChatComponentText;
-import onim.en.tldev.gui.ModuleSettingGUI;
 import onim.en.tldev.module.ModuleManager;
 import onim.en.tldev.util.GitRelease;
 import onim.en.tldev.util.Messenger;
@@ -59,7 +57,6 @@ public class DungeonDevCommand extends CommandBase {
       // this.process((chat) -> {
       // sender.addChatMessage(chat);
       // });
-      Minecraft.getMinecraft().displayGuiScreen(new ModuleSettingGUI());
     } else {
       Operation operation = Operation.getSuitable(args[0]);
       args = Arrays.copyOfRange(args, 1, args.length);

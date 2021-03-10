@@ -1,5 +1,9 @@
 package onim.en.tldev;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.input.Keyboard;
@@ -33,6 +37,7 @@ public class DungeonDev {
   public static final String NAME = "Dungeon Dev";
   public static final String VERSION = "0.0.1";
 
+  public static Path configPath;
   public static final Logger logger = LogManager.getLogger(NAME);
   public static final KeyBinding keyBindDevSettings =
       new KeyBinding(MODID + ".settings", Keyboard.KEY_P, MODID);
@@ -65,20 +70,21 @@ public class DungeonDev {
   @SideOnly(Side.CLIENT)
   @EventHandler
   public void preInit(FMLPreInitializationEvent event) {
-    // Load and set the mod info
-    // UpdateTool.update();
+    configPath = event.getModConfigurationDirectory().toPath().resolve("DungeonDev");
+    try {
+      Files.createDirectories(configPath);
+    } catch (IOException e) {
+      return;
+    }
   }
 
   @SideOnly(Side.CLIENT)
   @EventHandler
   public void init(FMLInitializationEvent event) {
     ClientCommandHandler.instance.registerCommand(new DungeonDevCommand());
-
     ClientRegistry.registerKeyBinding(keyBindDevSettings);
-
     ModuleManager.registerAll();
-    ModuleManager.enableAll();
-
+    ModuleManager.loadModuleSettings();
     MinecraftForge.EVENT_BUS.register(this);
   }
 
