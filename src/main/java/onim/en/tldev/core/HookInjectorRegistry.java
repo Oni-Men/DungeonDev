@@ -5,6 +5,7 @@ import java.util.Set;
 import com.google.common.collect.HashMultimap;
 
 import net.minecraftforge.fml.common.FMLLog;
+import onim.en.tldev.core.injectors.HookClickBlock;
 
 public class HookInjectorRegistry {
 
@@ -23,6 +24,8 @@ public class HookInjectorRegistry {
   }
 
   static {
-    FMLLog.info("Register all hook injectors");
+    FMLLog.info("[DungeonDev CORE] Register all hook injectors");
+
+    registerInjector(new HookClickBlock());
   }
 }

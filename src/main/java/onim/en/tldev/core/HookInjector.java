@@ -27,6 +27,12 @@ public abstract class HookInjector {
 
   public void registerEntry(ObfuscateType type, String methodName, String methodDesc) {
     map.put(type, new MethodIdentifier(methodName, methodDesc));
+    // FMLDeobfuscatingRemapper remapper = FMLDeobfuscatingRemapper.INSTANCE;
+    //
+    // String mapMethodName = remapper.mapMethodName(this.target, methodName, methodDesc);
+    // String mapMethodDesc = remapper.mapMethodDesc(methodDesc);
+    //
+    // map.put(ObfuscateType.NONE, new MethodIdentifier(mapMethodName, mapMethodDesc));
   }
 
   public MethodIdentifier getEntry(ObfuscateType type) {

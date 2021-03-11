@@ -32,7 +32,7 @@ public class CopyCommandBlockContent extends Module {
       return;
     }
 
-    GuiButton button = new GuiButton(this.buttonId, 8, 8, 100, 20, "Copy Command");
+    GuiButton button = new GuiButton(this.buttonId, 8, 8, 20, 20, "ⓘ");
     event.buttonList.add(button);
   }
 

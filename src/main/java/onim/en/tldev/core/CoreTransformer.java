@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodNode;
 
@@ -42,11 +43,15 @@ public class CoreTransformer implements IClassTransformer {
 
       }
 
+      ClassWriter classWriter = new ClassWriter(ClassWriter.COMPUTE_FRAMES);
+      classNode.accept(classWriter);
+
+      return classWriter.toByteArray();
     } catch (Exception e) {
       e.printStackTrace();
     }
 
-    return null;
+    return bytes;
   }
 
   private void callInjector(MethodNode methodNode, HookInjector injector) {
@@ -62,7 +67,7 @@ public class CoreTransformer implements IClassTransformer {
         continue;
 
       boolean ok = injector.injectHook(methodNode.instructions, type);
-      FMLLog.info("[HMage CORE] Hook inject into %s: %s", injector.target,
+      FMLLog.info("[DungeonDev CORE] Hook inject into %s: %s", injector.target,
           ok ? "SUCCESS" : "FAILED");
     }
   }

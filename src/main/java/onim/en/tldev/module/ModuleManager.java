@@ -114,10 +114,6 @@ public class ModuleManager {
       return;
     }
 
-    if (module.isEnabled()) {
-      return;
-    }
-
     MinecraftForge.EVENT_BUS.register(module);
     module.onEnable();
     DungeonDev.logger.info("Enable Module: " + module.getName());
@@ -135,10 +131,6 @@ public class ModuleManager {
 
   public static void disableModule(Module module) {
     if (module == null) {
-      return;
-    }
-
-    if (!module.isEnabled()) {
       return;
     }
 
@@ -192,7 +184,9 @@ public class ModuleManager {
         Module module = new Gson().fromJson(json, entry.getValue().getClass());
         JavaUtil.merge(entry.getValue(), module);
 
-        DungeonDev.logger.info(entry.getKey() + ": " + module.isEnabled());
+        if (module.isEnabled()) {
+          ModuleManager.enableModule(module);
+        }
       } catch (Exception e) {
         continue;
       }

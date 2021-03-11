@@ -5,9 +5,11 @@ import java.util.HashMap;
 import com.google.common.collect.Maps;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.util.BlockPos;
-import net.minecraftforge.event.world.BlockEvent;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import onim.en.tldev.event.ClickBlockEvent;
 import onim.en.tldev.module.DungeonDevModule;
 import onim.en.tldev.module.Module;
 
@@ -17,19 +19,33 @@ public class CommandBlockProtector extends Module {
   private HashMap<BlockPos, Long> commandBlockClicked = Maps.newHashMap();
 
   @SubscribeEvent
-  public void onBlockBreak(BlockEvent.BreakEvent event) {
-    Block block = event.state.getBlock();
-    BlockPos pos = event.pos;
+  public void onClickBlock(ClickBlockEvent event) {
     long current = System.currentTimeMillis();
-    if (Block.getIdFromBlock(block) == 137) {
-      if (commandBlockClicked.containsKey(pos)) {
-        Long clicked = commandBlockClicked.remove(pos);
-        event.setCanceled(current - clicked > 3000);
-      } else {
-        commandBlockClicked.put(pos, current);
-        event.setCanceled(true);
-      }
-    }
-  }
+    World world = Minecraft.getMinecraft().theWorld;
 
+    if (world == null) {
+      return;
+    }
+
+    Block block = world.getBlockState(event.blockPos).getBlock();
+
+    if (Block.getIdFromBlock(block) != 137) {
+      return;
+    }
+
+    Long clicked = commandBlockClicked.get(event.blockPos);
+    if (clicked == null) {
+      commandBlockClicked.put(event.blockPos, current);
+      event.setCanceled(true);
+      return;
+    }
+
+    if (!Minecraft.getMinecraft().gameSettings.keyBindAttack.isPressed()) {
+      event.setCanceled(true);
+      return;
+    }
+
+    commandBlockClicked.remove(event.blockPos);
+    event.setCanceled(current - clicked > 3000);
+  }
 }
